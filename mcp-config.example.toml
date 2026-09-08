@@ -1,0 +1,5 @@
+# Add this server with: codex mcp add marketPulse --url http://127.0.0.1:4173/mcp
+# For a deployed server, use its HTTPS URL and configure MARKET_PULSE_MCP_TOKEN.
+
+[mcp_servers.marketPulse]
+url = "http://127.0.0.1:4173/mcp"

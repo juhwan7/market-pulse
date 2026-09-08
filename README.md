@@ -47,6 +47,7 @@ node server.js
 ├── styles.css                  # 반응형 화면 스타일
 ├── app.js                      # 화면 상태, 탭, 차트, 시연 데이터 렌더링
 ├── server.js                   # 정적 파일, 상태 API, SSE 스트림
+├── mcp-config.example.toml     # Codex용 로컬 MCP 연결 예시
 ├── .env.example                # 서버 전용 환경 변수 예시
 └── skills/
     └── market-pulse-ops/
@@ -62,6 +63,7 @@ node server.js
 | `GET /api/health` | 서버 상태 및 시연/실운영 모드 |
 | `GET /api/market/overview` | 시장 상태와 핵심 지표 |
 | `GET /api/market/stream` | 실시간 이벤트 연결 |
+| `POST /mcp` | Codex 등 MCP 클라이언트가 읽기 전용 시장 도구를 호출하는 엔드포인트 |
 
 실제 데이터 어댑터는 아래 엔드포인트를 추가하는 방식으로 확장합니다.
 
@@ -96,6 +98,18 @@ GET /api/market/news
 ## Codex 스킬
 
 [`skills/market-pulse-ops/SKILL.md`](skills/market-pulse-ops/SKILL.md)는 이 프로젝트를 안전하게 확장하기 위한 운영 지침입니다. 데이터 어댑터, 시장 국면·레버리지 지표, 뉴스 타임라인, 보안 검토를 변경할 때 사용합니다.
+
+## MCP 연결
+
+서버가 실행 중일 때 아래 명령으로 Codex에 읽기 전용 시장 도구를 등록합니다.
+
+```bash
+codex mcp add marketPulse --url http://127.0.0.1:4173/mcp
+```
+
+등록 후 새 Codex 세션에서 `시장 상황을 요약해줘`, `신용 레버리지 위험도를 보여줘`처럼 요청하면 `market_get_overview`, `market_get_leverage_risk`, `market_get_news_timeline`, `market_get_server_status` 도구를 사용할 수 있습니다.
+
+로컬 서버는 기본적으로 `127.0.0.1`에만 바인딩합니다. 외부에 배포할 때는 HTTPS, `MARKET_PULSE_MCP_TOKEN`, 접근 제어, 데이터 공급원 재배포 권한을 반드시 구성해야 합니다. 주문·계좌·설정 변경 도구는 이 MCP 서버에 포함하지 않습니다.
 
 ## 다음 단계
 
