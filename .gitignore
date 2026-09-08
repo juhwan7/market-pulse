@@ -1,0 +1,10 @@
+# Local secrets and runtime files
+.env
+.env.*
+!.env.example
+*.log
+
+# Editor and operating-system files
+.DS_Store
+Thumbs.db
+.vscode/

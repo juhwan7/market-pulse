@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="소규모 팀을 위한 한국 시장 상황실 대시보드" />
+    <title>시장 상황실 | Market Pulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="주요 탐색">
+        <div class="brand"><span class="brand-mark">M</span><span>MARKET PULSE</span></div>
+        <nav class="nav-list">
+          <button class="nav-item active" data-view="overview"><span>01</span> 시장 개요</button>
+          <button class="nav-item" data-view="flows"><span>02</span> 국내 수급</button>
+          <button class="nav-item" data-view="global"><span>03</span> 글로벌 환경</button>
+          <button class="nav-item" data-view="leverage"><span>04</span> 신용 레버리지</button>
+          <button class="nav-item" data-view="news"><span>05</span> 뉴스 타임라인</button>
+        </nav>
+        <div class="sidebar-footer">
+          <span class="pulse-dot"></span> 데이터 수집 정상
+          <small id="sidebar-time">마지막 동기화: --</small>
+        </div>
+      </aside>
+
+      <main class="content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">SEOUL MARKET DESK / INTERNAL BETA</p>
+            <h1 id="page-title">오늘의 시장 상태</h1>
+          </div>
+          <div class="topbar-actions">
+            <span class="market-state"><i></i> 장중 · KST</span>
+            <button class="quiet-button" id="refresh-button">데이터 갱신</button>
+          </div>
+        </header>
+
+        <section id="overview" class="view active">
+          <section class="hero-grid">
+            <article class="market-verdict">
+              <p class="section-kicker">MARKET REGIME</p>
+              <div class="verdict-line"><span id="regime-label">중립 · 경계</span><span class="score" id="regime-score">54</span></div>
+              <p id="regime-copy">외국인 선물 수급은 약하지만 원/달러와 미국 금리의 부담은 제한적입니다.</p>
+              <div class="signal-track" aria-label="시장 위험 선호도"><span id="risk-marker"></span></div>
+              <div class="risk-labels"><span>위험 회피</span><span>중립</span><span>위험 선호</span></div>
+            </article>
+            <article class="brief-card">
+              <p class="section-kicker">DESK BRIEF</p>
+              <ul id="desk-brief"></ul>
+            </article>
+          </section>
+
+          <section class="metric-grid" aria-label="주요 시장 지표">
+            <article class="metric-card"><p>코스피</p><strong id="kospi-value">2,781.32</strong><span class="positive" id="kospi-change">+0.42%</span></article>
+            <article class="metric-card"><p>코스닥</p><strong id="kosdaq-value">884.18</strong><span class="negative" id="kosdaq-change">-0.28%</span></article>
+            <article class="metric-card"><p>코스피200 선물</p><strong id="future-value">367.15</strong><span class="positive" id="future-change">+0.31%</span></article>
+            <article class="metric-card"><p>원/달러</p><strong id="fx-value">1,368.40</strong><span class="negative" id="fx-change">+0.18%</span></article>
+            <article class="metric-card"><p>나스닥100 선물</p><strong id="nasdaq-value">20,114.50</strong><span class="positive" id="nasdaq-change">+0.36%</span></article>
+          </section>
+
+          <section class="panel chart-panel">
+            <div class="panel-heading"><div><p class="section-kicker">INTRADAY RELATIVE MOVE</p><h2>국내·글로벌 동조화</h2></div><div class="legend"><button data-series="kospi" class="legend-item selected">코스피</button><button data-series="futures" class="legend-item selected">선물</button><button data-series="fx" class="legend-item selected">원/달러</button><button data-series="nasdaq" class="legend-item selected">나스닥 선물</button></div></div>
+            <div class="chart-wrap"><svg id="relative-chart" role="img" aria-label="장중 지표 변화율 차트"></svg></div>
+          </section>
+
+          <section class="lower-grid">
+            <article class="panel flow-summary"><div class="panel-heading"><div><p class="section-kicker">DOMESTIC FLOW</p><h2>외국인 수급</h2></div><button class="text-button" data-go="flows">상세 보기 →</button></div><div class="flow-number"><strong id="foreign-flow">-2,184억</strong><span>코스피200 선물 누적</span></div><div id="flow-bars" class="flow-bars"></div><p class="timestamp">장중 잠정치 · 제공원 기준 시차 가능</p></article>
+            <article class="panel leverage-summary"><div class="panel-heading"><div><p class="section-kicker">LEVERAGE WATCH</p><h2>신용 레버리지 위험도</h2></div><button class="text-button" data-go="leverage">상세 보기 →</button></div><div class="gauge-line"><strong id="leverage-score">67</strong><span>/ 100 · 경계</span></div><div class="segmented-gauge"><i></i><i></i><i></i><i></i><i></i></div><p id="leverage-copy">코스닥 신용잔고 증가 속도가 평균보다 높습니다.</p><p class="timestamp">전일 공표 기준 · 장중 지표 아님</p></article>
+          </section>
+        </section>
+
+        <section id="flows" class="view"><section class="panel large-panel"><div class="panel-heading"><div><p class="section-kicker">DOMESTIC POSITIONING</p><h2>현물과 선물 수급의 방향</h2></div><span class="data-note">장중 잠정치</span></div><div class="split-charts"><div><h3>외국인 코스피200 선물 누적 순매수</h3><svg id="futures-flow-chart" class="chart" role="img" aria-label="외국인 선물 순매수 누적 차트"></svg></div><div><h3>투자자별 현물 순매수</h3><div id="investor-table" class="investor-table"></div></div></div></section></section>
+
+        <section id="global" class="view"><section class="metric-grid global-metrics" id="global-metrics"></section><section class="panel chart-panel"><div class="panel-heading"><div><p class="section-kicker">CROSS-ASSET</p><h2>글로벌 위험 변수</h2></div><span class="data-note">종가·실시간 여부는 공급원 기준</span></div><div class="chart-wrap"><svg id="global-chart" role="img" aria-label="미국 금리와 원자재 변화 차트"></svg></div></section></section>
+
+        <section id="leverage" class="view"><section class="leverage-hero"><div><p class="section-kicker">MARKET-WIDE LEVERAGE</p><h2>신용은 장중 방향이 아니라<br />시장의 취약성을 보여줍니다.</h2><p>신용융자 잔고 수준, 증가 속도, 거래대금 대비 부담, 집중도를 결합해 과열 가능성을 관찰합니다.</p></div><div class="risk-card"><span>현재 위험도</span><strong id="leverage-large">67</strong><em>경계</em><small>기준일: 전일 장 마감</small></div></section><section class="split-charts leverage-charts"><div class="panel"><div class="panel-heading"><div><p class="section-kicker">OUTSTANDING BALANCE</p><h2>신용잔고 추이</h2></div></div><svg id="credit-balance-chart" class="chart" role="img" aria-label="코스피와 코스닥 신용잔고 추이"></svg></div><div class="panel"><div class="panel-heading"><div><p class="section-kicker">RISK COMPONENTS</p><h2>위험도 구성</h2></div></div><div id="risk-components" class="risk-components"></div></div></section><section class="panel"><div class="panel-heading"><div><p class="section-kicker">INTERPRETATION</p><h2>현재 판단 근거</h2></div></div><ul class="evidence-list" id="leverage-evidence"></ul></section></section>
+
+        <section id="news" class="view"><section class="panel news-panel"><div class="panel-heading"><div><p class="section-kicker">EVENTS THAT MOVE MARKETS</p><h2>핵심 뉴스 타임라인</h2></div><button class="quiet-button" id="news-filter">전체 이벤트</button></div><div id="news-timeline" class="news-timeline"></div></section></section>
+      </main>
+    </div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js"></script>
+  </body>
+</html>
